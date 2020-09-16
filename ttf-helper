@@ -1,0 +1,68 @@
+#!/bin/bash
+
+DIR="$HOME/ttf-helper/ttf-dir.txt"
+
+directory=$(<$DIR)
+
+MODE=$(dialog --backtitle "ttf-helper v1.0.0" \
+	--title "ttf helper" \
+	--menu "Choose what to do" 0 40 0 \
+	1 "Add ttf fonts" \
+	2 "Remove ttf fonts" \
+	3 "TTF fonts directory" \
+	3>&1 1>&2 2>&3)
+
+if (( $MODE == 1 ))
+then
+
+clear
+
+sudo cp -n -r $directory /usr/share/fonts/TTF/
+echo "Done"
+
+exit 1
+
+fi
+
+if (( $MODE == 2))
+then
+
+clear
+
+sudo rm -r /usr/share/fonts/TTF/
+echo "Done"
+
+exit 2
+
+fi
+
+if (( $MODE == 3 ))
+then
+
+clear
+
+mkdir $HOME/ttf-helper/
+
+>$DIR
+
+dialog --backtitle "ttf-helper v1.0.0" \
+        --title "Fonts location" \
+        --inputbox "Enter TTF fonts directory, make sure to include the TTF folder that contains the fonts in the directory. \
+
+
+Please, don't put spaces in your TTF fonts directory. \
+
+You only need to do this onece." \ 0 0 2>$DIR
+
+ttf-helper
+
+fi
+
+if (( $MODE !-n )) 
+then
+
+clear
+
+exit 3
+
+fi
